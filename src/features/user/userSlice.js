@@ -15,12 +15,37 @@ export const loginWithGoogle = createAsyncThunk(
 );
 
 export const logout = () => (dispatch) => {};
+
+//회원가입 비동기 처리
 export const registerUser = createAsyncThunk(
   "user/registerUser",
   async (
     { email, name, password, navigate },
     { dispatch, rejectWithValue }
-  ) => {}
+  ) => {
+    try {
+      const response = await api.post("/user", { email, name, password });
+      if (response.status === 200) {
+        //회원가입 성공 시 토스트메세지 보여주고, 로그인페이지로 이동
+        dispatch(
+          showToastMessage({
+            message: "회원가입을 성공했습니다.",
+            status: "success",
+          })
+        );
+        navigate("/login");
+        return response.data.data;
+      }
+    } catch (error) {
+      dispatch(
+        showToastMessage({
+          message: "회원가입에 실패했습니다.",
+          status: "error",
+        })
+      );
+      return rejectWithValue(error.message);
+    }
+  }
 );
 
 export const loginWithToken = createAsyncThunk(
@@ -43,7 +68,20 @@ const userSlice = createSlice({
       state.registrationError = null;
     },
   },
-  extraReducers: (builder) => {},
+  extraReducers: (builder) => {
+    builder
+      .addCase(registerUser.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(registerUser.fulfilled, (state) => {
+        state.loading = false;
+        state.registrationError = null;
+      })
+      .addCase(registerUser.rejected, (state, action) => {
+        state.loading = false;
+        state.registrationError = action.payload;
+      });
+  },
 });
 export const { clearErrors } = userSlice.actions;
 export default userSlice.reducer;
