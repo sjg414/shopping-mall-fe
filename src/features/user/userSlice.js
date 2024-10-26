@@ -10,8 +10,11 @@ export const loginWithEmail = createAsyncThunk(
   async ({ email, password }, { rejectWithValue }) => {
     try {
       const response = await api.post("/auth/login", { email, password });
+      //성공 시 data값 저장
+      console.log("uuuuu", response.data.token);
       return response.data;
     } catch (err) {
+      //실패시 loginError 값 저장
       return rejectWithValue(err.message);
     }
   }
@@ -98,6 +101,7 @@ const userSlice = createSlice({
         state.loading = false;
         state.user = action.payload.user;
         state.loginError = null;
+        sessionStorage.setItem("token", action.payload.token);
       })
       .addCase(loginWithEmail.rejected, (state, action) => {
         state.loading = false;
