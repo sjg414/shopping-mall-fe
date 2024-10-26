@@ -11,7 +11,6 @@ export const loginWithEmail = createAsyncThunk(
     try {
       const response = await api.post("/auth/login", { email, password });
       //성공 시 data값 저장
-      console.log("uuuuu", response.data.token);
       return response.data;
     } catch (err) {
       //실패시 loginError 값 저장
@@ -25,7 +24,24 @@ export const loginWithGoogle = createAsyncThunk(
   async (token, { rejectWithValue }) => {}
 );
 
-export const logout = () => (dispatch) => {};
+export const logout = () => (dispatch) => {
+  try {
+    dispatch(logoutAction());
+    dispatch(
+      showToastMessage({
+        message: "로그아웃되었습니다.",
+        status: "success",
+      })
+    );
+  } catch (error) {
+    dispatch(
+      showToastMessage({
+        message: "로그아웃에 실패했습니다.",
+        status: "error",
+      })
+    );
+  }
+};
 
 //회원가입 비동기 처리
 export const registerUser = createAsyncThunk(
@@ -78,6 +94,11 @@ const userSlice = createSlice({
       state.loginError = null;
       state.registrationError = null;
     },
+    logoutAction: (state) => {
+      console.log("logout action");
+      state.user = null;
+      sessionStorage.removeItem("token");
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -109,5 +130,5 @@ const userSlice = createSlice({
       });
   },
 });
-export const { clearErrors } = userSlice.actions;
+export const { clearErrors, logoutAction } = userSlice.actions;
 export default userSlice.reducer;
