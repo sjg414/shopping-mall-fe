@@ -19,25 +19,30 @@ const RegisterPage = () => {
   const navigate = useNavigate();
   const [passwordError, setPasswordError] = useState("");
   const [policyError, setPolicyError] = useState(false);
-  const { registrationError } = useSelector((state) => state.user);
+  const { loading, registrationError } = useSelector((state) => state.user);
 
+  //회원가입
   const register = (event) => {
-    event.preventDefault();
-    const { name, email, password, confirmPassword, policy } = formData;
-    const checkConfirmPassword = password === confirmPassword;
+    event.preventDefault(); //새로고침 방지
+    const { name, email, password, confirmPassword, policy } = formData; //입력값 가져오기
+    const checkConfirmPassword = password === confirmPassword; //패스워드 확인
     if (!checkConfirmPassword) {
+      //패스워드가 일치하지 않으면
       setPasswordError("비밀번호 중복확인이 일치하지 않습니다.");
       return;
     }
     if (!policy) {
+      //policy 체크가 되어있지 않으면
       setPolicyError(true);
       return;
     }
+    //error reset
     setPasswordError("");
     setPolicyError(false);
-    dispatch(registerUser({ name, email, password, navigate }));
+    dispatch(registerUser({ name, email, password, navigate })); //리듀서로 액션 던지기
   };
 
+  //입력 값 받기
   const handleChange = (event) => {
     event.preventDefault();
     let { id, value, type, checked } = event.target;
@@ -111,12 +116,18 @@ const RegisterPage = () => {
             id="policy"
             onChange={handleChange}
             isInvalid={policyError}
-            checked={formData.policy}
+            checked={formData.policy} //이용약관 체크
           />
         </Form.Group>
-        <Button variant="danger" type="submit">
-          회원가입
-        </Button>
+        {loading ? (
+          <Button variant="danger" type="submit" disabled>
+            진행중
+          </Button>
+        ) : (
+          <Button variant="danger" type="submit">
+            회원가입
+          </Button>
+        )}
       </Form>
     </Container>
   );

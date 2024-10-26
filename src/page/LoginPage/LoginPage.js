@@ -20,7 +20,7 @@ const Login = () => {
     if (loginError) {
       dispatch(clearErrors());
     }
-  }, [navigate]);
+  }, [navigate, user]);
   const handleLoginWithEmail = (event) => {
     event.preventDefault();
     dispatch(loginWithEmail({ email, password }));
@@ -29,7 +29,7 @@ const Login = () => {
   const handleGoogleLogin = async (googleData) => {
     //구글 로그인 하기
   };
-
+  //user가 있을 시(로그인 성공 시) "/"로 redirect
   if (user) {
     navigate("/");
   }
