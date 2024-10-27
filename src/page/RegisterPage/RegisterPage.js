@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Container, Form, Button, Alert } from "react-bootstrap";
+import { Container, Form, Button, Alert, Spinner } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 
@@ -121,7 +121,14 @@ const RegisterPage = () => {
         </Form.Group>
         {loading ? (
           <Button variant="danger" type="submit" disabled>
-            진행중
+            <Spinner
+              as="span"
+              animation="grow"
+              size="sm"
+              role="status"
+              aria-hidden="true"
+            />
+            Loading...
           </Button>
         ) : (
           <Button variant="danger" type="submit">

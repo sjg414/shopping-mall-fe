@@ -75,9 +75,17 @@ export const registerUser = createAsyncThunk(
   }
 );
 
+//토큰 로그인
 export const loginWithToken = createAsyncThunk(
   "user/loginWithToken",
-  async (_, { rejectWithValue }) => {}
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await api.get("/user/me");
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err.message);
+    }
+  }
 );
 
 const userSlice = createSlice({
@@ -114,7 +122,7 @@ const userSlice = createSlice({
         state.loading = false;
         state.registrationError = action.payload;
       })
-      //login reducer
+      //loginWithEmail reducer
       .addCase(loginWithEmail.pending, (state) => {
         state.loading = true;
       })
@@ -125,6 +133,19 @@ const userSlice = createSlice({
         sessionStorage.setItem("token", action.payload.token);
       })
       .addCase(loginWithEmail.rejected, (state, action) => {
+        state.loading = false;
+        state.loginError = action.payload;
+      })
+      //loginWithToken
+      .addCase(loginWithToken.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(loginWithToken.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload.user;
+        state.loginError = null;
+      })
+      .addCase(loginWithToken.rejected, (state, action) => {
         state.loading = false;
         state.loginError = action.payload;
       });

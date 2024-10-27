@@ -37,6 +37,7 @@ const Navbar = ({ user }) => {
       navigate(`?name=${event.target.value}`);
     }
   };
+  //로그아웃
   const handleLogout = () => {
     dispatch(logout());
   };

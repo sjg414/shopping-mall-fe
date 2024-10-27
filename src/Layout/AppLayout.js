@@ -13,9 +13,11 @@ const AppLayout = ({ children }) => {
   const dispatch = useDispatch();
 
   const { user } = useSelector((state) => state.user);
+  //토큰으로 로그인
   useEffect(() => {
     dispatch(loginWithToken());
   }, []);
+
   useEffect(() => {
     if (user) {
       dispatch(getCartQty());

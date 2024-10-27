@@ -7,6 +7,7 @@ import "react-toastify/dist/ReactToastify.css";
 const ToastMessage = () => {
   const { toastMessage } = useSelector((state) => state.ui);
   console.log("here", toastMessage);
+
   useEffect(() => {
     if (toastMessage) {
       const { message, status } = toastMessage;
@@ -18,7 +19,7 @@ const ToastMessage = () => {
   return (
     <ToastContainer
       position="top-right"
-      autoClose={5000}
+      autoClose={2000}
       hideProgressBar={false}
       newestOnTop={false}
       closeOnClick
