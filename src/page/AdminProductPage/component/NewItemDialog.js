@@ -35,7 +35,6 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
 
   useEffect(() => {
     //submit 성공 시 다이얼로그 닫기
-    console.log("success", success);
     if (success) setShowDialog(false);
   }, [success]);
 
