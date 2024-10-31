@@ -9,7 +9,8 @@ export const getProductList = createAsyncThunk(
     try {
       const response = await api.get("/product");
       if (response.status !== 200) throw new Error(response.error);
-      return response.data.productList;
+      // console.log("rrrrr", response);
+      return response.data.data;
     } catch (err) {
       return rejectWithValue(err.message);
     }
@@ -72,6 +73,10 @@ const productSlice = createSlice({
       state.error = "";
       state.success = false;
     },
+    setError: (state, action) => {
+      state.error = action.payload;
+      state.success = false;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -103,6 +108,6 @@ const productSlice = createSlice({
   },
 });
 
-export const { setSelectedProduct, setFilteredList, clearError } =
+export const { setSelectedProduct, setFilteredList, clearError, setError } =
   productSlice.actions;
 export default productSlice.reducer;

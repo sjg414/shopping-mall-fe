@@ -8,7 +8,9 @@ import {
   clearError,
   createProduct,
   editProduct,
+  setError,
 } from "../../../features/product/productSlice";
+import { isEmpty } from "@cloudinary/url-gen/backwards/utils/isEmpty";
 
 //FormData 초기세팅
 const InitialFormData = {
@@ -71,20 +73,32 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
   const handleSubmit = (event) => {
     event.preventDefault();
     console.log("formdata", formData);
-    //재고를 입력했는지 확인, 아니면 에러
-    if (stock.length === 0) {
-      setStockError(true);
-    }
-    // 재고를 배열에서 객체로 바꿔주기
-    // [['M',2]] 에서 {M:2}로
-    const totalStock = stock.reduce((total, item) => {
-      return { ...total, [item[0]]: parseInt(item[1]) };
-    }, {});
-    if (mode === "new") {
-      //새 상품 만들기
-      dispatch(createProduct({ ...formData, stock: totalStock }));
-    } else {
-      // 상품 수정하기
+    try {
+      //재고를 입력했는지 확인, 아니면 에러
+      if (stock.length === 0) {
+        setStockError(true);
+        throw new Error("재고를 입력해주세요!!");
+      } //사진 확인
+      if (!formData.image) {
+        throw new Error("사진을 넣어주세요!!");
+      } //가격확인
+      if (formData.price === 0) {
+        throw new Error("가격을 입력해주세요!!");
+      }
+      // 재고를 배열에서 객체로 바꿔주기
+      // [['M',2]] 에서 {M:2}로
+      const totalStock = stock.reduce((total, item) => {
+        return { ...total, [item[0]]: parseInt(item[1]) };
+      }, {});
+      if (mode === "new") {
+        //새 상품 만들기
+        setStockError(false);
+        dispatch(createProduct({ ...formData, stock: totalStock }));
+      } else {
+        // 상품 수정하기
+      }
+    } catch (error) {
+      dispatch(setError(error.message));
     }
   };
 
