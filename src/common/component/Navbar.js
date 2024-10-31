@@ -32,9 +32,9 @@ const Navbar = ({ user }) => {
   const onCheckEnter = (event) => {
     if (event.key === "Enter") {
       if (event.target.value === "") {
-        return navigate("/");
+        return navigate("?page=1");
       }
-      navigate(`?name=${event.target.value}`);
+      navigate(`?page=1&name=${event.target.value}`);
     }
   };
   //로그아웃
@@ -124,7 +124,7 @@ const Navbar = ({ user }) => {
       </div>
 
       <div className="nav-logo">
-        <Link to="/">
+        <Link to="?page=1">
           <img width={100} src="/image/hm-logo.png" alt="hm-logo.png" />
         </Link>
       </div>
