@@ -38,11 +38,19 @@ const AdminProductPage = () => {
 
   //상품리스트 가져오기 (url쿼리 맞춰서)
   useEffect(() => {
-    dispatch(getProductList());
-  }, [showDialog]);
+    dispatch(getProductList({ ...searchQuery }));
+  }, [showDialog, query]);
 
   useEffect(() => {
     //검색어나 페이지가 바뀌면 url바꿔주기 (검색어또는 페이지가 바뀜 => url 바꿔줌=> url쿼리 읽어옴=> 이 쿼리값 맞춰서  상품리스트 가져오기)
+    if (searchQuery.name === "") {
+      delete searchQuery.name;
+    }
+    console.log("ssssss", searchQuery);
+    const params = new URLSearchParams(searchQuery); //query 값으로 변경
+    const query = params.toString();
+
+    navigate("?" + query);
   }, [searchQuery]);
 
   const deleteItem = (id) => {
@@ -63,6 +71,7 @@ const AdminProductPage = () => {
 
   const handlePageClick = ({ selected }) => {
     //  쿼리에 페이지값 바꿔주기
+    setSearchQuery({ ...searchQuery, page: selected + 1 });
   };
 
   return (
@@ -89,9 +98,9 @@ const AdminProductPage = () => {
         <ReactPaginate
           nextLabel="next >"
           onPageChange={handlePageClick}
-          pageRangeDisplayed={5}
-          pageCount={100}
-          forcePage={searchQuery.page - 1}
+          pageRangeDisplayed={5} //표현할 페이지
+          pageCount={totalPageNum} //전체페이지 백에 전달해야하는 정보
+          forcePage={searchQuery.page - 1} //실제페이지 + 1 값
           previousLabel="< previous"
           renderOnZeroPageCount={null}
           pageClassName="page-item"

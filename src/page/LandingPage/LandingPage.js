@@ -4,6 +4,7 @@ import { Row, Col, Container } from "react-bootstrap";
 import { useSearchParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getProductList } from "../../features/product/productSlice";
+import ReactPaginate from "react-paginate";
 
 const LandingPage = () => {
   const dispatch = useDispatch();
