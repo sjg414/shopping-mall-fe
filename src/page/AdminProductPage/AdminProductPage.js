@@ -46,7 +46,7 @@ const AdminProductPage = () => {
     if (searchQuery.name === "") {
       delete searchQuery.name;
     }
-    console.log("ssssss", searchQuery);
+    // console.log("ssssss", searchQuery);
     const params = new URLSearchParams(searchQuery); //query 값으로 변경
     const query = params.toString();
 
@@ -55,11 +55,15 @@ const AdminProductPage = () => {
 
   const deleteItem = (id) => {
     //아이템 삭제하기
+    dispatch(deleteProduct(id));
   };
 
   const openEditForm = (product) => {
     //edit모드로 설정하고
+    setMode("edit");
     // 아이템 수정다이얼로그 열어주기
+    dispatch(setSelectedProduct(product));
+    setShowDialog(true);
   };
 
   const handleClickNewItem = () => {
@@ -91,7 +95,7 @@ const AdminProductPage = () => {
 
         <ProductTable
           header={tableHeader}
-          data={productList}
+          data={productList.filter((item) => item.isDelete === false)}
           deleteItem={deleteItem}
           openEditForm={openEditForm}
         />

@@ -25,7 +25,7 @@ const InitialFormData = {
 };
 
 const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
-  const { error, success, selectedProduct } = useSelector(
+  const { error, success, selectedProduct, loading } = useSelector(
     (state) => state.product
   );
   const [formData, setFormData] = useState(
@@ -96,6 +96,13 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
         dispatch(createProduct({ ...formData, stock: totalStock }));
       } else {
         // 상품 수정하기
+        dispatch(
+          editProduct({
+            ...formData,
+            stock: totalStock,
+            id: selectedProduct._id,
+          })
+        );
       }
     } catch (error) {
       dispatch(setError(error.message));
@@ -327,12 +334,20 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
           </Form.Group>
         </Row>
         {mode === "new" ? (
-          <Button variant="primary" type="submit">
-            Submit
+          <Button
+            variant={loading ? "warning" : "primary"}
+            type="submit"
+            disabled={loading}
+          >
+            {loading ? "loading..." : "Submit"}
           </Button>
         ) : (
-          <Button variant="primary" type="submit">
-            Edit
+          <Button
+            variant={loading ? "warning" : "primary"}
+            type="submit"
+            disabled={loading}
+          >
+            {loading ? "loading..." : "Edit"}
           </Button>
         )}
       </Form>

@@ -7,6 +7,7 @@ import { currencyFormat } from "../../utils/number";
 import "./style/productDetail.style.css";
 import { getProductDetail } from "../../features/product/productSlice";
 import { addToCart } from "../../features/cart/cartSlice";
+import Spinner from "react-bootstrap/Spinner";
 
 const ProductDetail = () => {
   const dispatch = useDispatch();
@@ -32,15 +33,22 @@ const ProductDetail = () => {
 
   if (loading || !selectedProduct)
     return (
-      <ColorRing
-        visible={true}
-        height="80"
-        width="80"
-        ariaLabel="blocks-loading"
-        wrapperStyle={{}}
-        wrapperClass="blocks-wrapper"
-        colors={["#e15b64", "#f47e60", "#f8b26a", "#abbd81", "#849b87"]}
-      />
+      // <ColorRing
+      //   visible={true}
+      //   height="80"
+      //   width="80"
+      //   ariaLabel="blocks-loading"
+      //   wrapperStyle={{}}
+      //   wrapperClass="blocks-wrapper"
+      //   colors={["#e15b64", "#f47e60", "#f8b26a", "#abbd81", "#849b87"]}
+      // />
+      <div className="loadingSpinner">
+        <Spinner
+          animation="border"
+          variant="warning"
+          style={{ width: "12rem", height: "12rem" }}
+        />
+      </div>
     );
   return (
     <Container className="product-detail-card">

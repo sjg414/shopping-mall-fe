@@ -5,11 +5,14 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getProductList } from "../../features/product/productSlice";
 import ReactPaginate from "react-paginate";
+import Spinner from "react-bootstrap/Spinner";
 
 const LandingPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { productList, totalPageNum } = useSelector((state) => state.product);
+  const { productList, totalPageNum, loading } = useSelector(
+    (state) => state.product
+  );
   const [query] = useSearchParams();
   const [searchQuery, setSearchQuery] = useState({
     page: query.get("page") || 1,
@@ -41,15 +44,28 @@ const LandingPage = () => {
     //  쿼리에 페이지값 바꿔주기
     setSearchQuery({ ...searchQuery, page: selected + 1 });
   };
+
+  if (loading || !productList)
+    return (
+      <div className="loadingSpinner">
+        <Spinner
+          animation="border"
+          variant="warning"
+          style={{ width: "12rem", height: "12rem" }}
+        />
+      </div>
+    );
   return (
     <Container>
       <Row>
         {productList.length > 0 ? (
-          productList.map((item) => (
-            <Col md={3} sm={12} key={item._id}>
-              <ProductCard item={item} />
-            </Col>
-          ))
+          productList
+            .filter((item) => item.isDelete === false)
+            .map((item) => (
+              <Col md={3} sm={12} key={item._id}>
+                <ProductCard item={item} />
+              </Col>
+            ))
         ) : (
           <div className="text-align-center empty-bag">
             {query.get("name") === "" ? (
@@ -60,6 +76,7 @@ const LandingPage = () => {
           </div>
         )}
       </Row>
+
       <ReactPaginate
         nextLabel="next >"
         onPageChange={handlePageClick}
