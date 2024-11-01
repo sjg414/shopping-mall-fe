@@ -87,9 +87,16 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
       }
       // 재고를 배열에서 객체로 바꿔주기
       // [['M',2]] 에서 {M:2}로
-      const totalStock = stock.reduce((total, item) => {
+      const order = ["xs", "s", "m", "l", "xl"];
+      const sortedStock = [...stock].sort(
+        (a, b) => order.indexOf(a[0]) - order.indexOf(b[0])
+      );
+      console.log("stock", stock);
+      console.log("sortedStock", sortedStock);
+      const totalStock = sortedStock.reduce((total, item) => {
         return { ...total, [item[0]]: parseInt(item[1]) };
       }, {});
+      console.log("totalStock", totalStock);
       if (mode === "new") {
         //새 상품 만들기
         setStockError(false);
