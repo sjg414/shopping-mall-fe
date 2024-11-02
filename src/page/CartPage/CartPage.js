@@ -7,16 +7,28 @@ import OrderReceipt from "../PaymentPage/component/OrderReceipt";
 import "./style/cart.style.css";
 import { getCartList } from "../../features/cart/cartSlice";
 import { getProductDetail } from "../../features/product/productSlice";
+import Spinner from "react-bootstrap";
 
 const CartPage = () => {
   const dispatch = useDispatch();
-  const { cartList, totalPrice } = useSelector((state) => state.cart);
+  const { cartList, totalPrice, loading } = useSelector((state) => state.cart);
 
   useEffect(() => {
     //카트리스트 불러오기
     dispatch(getCartList());
   }, []);
-  console.log("cartList", cartList);
+  // console.log("cartList", cartList);
+
+  if (loading || !cartList)
+    return (
+      <div className="loadingSpinner">
+        <Spinner
+          animation="border"
+          variant="warning"
+          style={{ width: "12rem", height: "12rem" }}
+        />
+      </div>
+    );
   return (
     <Container>
       <Row>
