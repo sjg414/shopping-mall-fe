@@ -11,8 +11,8 @@ export const getProductList = createAsyncThunk(
       if (response.status !== 200) throw new Error(response.error);
       // console.log("rrrr", response.data.data);
       return response.data;
-    } catch (err) {
-      return rejectWithValue(err.message);
+    } catch (error) {
+      return rejectWithValue(error.error);
     }
   }
 );
@@ -23,10 +23,10 @@ export const getProductDetail = createAsyncThunk(
     try {
       const response = await api.get(`/product/${id}`);
       if (response.status !== 200) throw new Error(response.error);
-      console.log("getDetail", response.data.product);
+      // console.log("getDetail", response.data.product);
       return response.data;
-    } catch (err) {
-      return rejectWithValue(err.message);
+    } catch (error) {
+      return rejectWithValue(error.error);
     }
   }
 );
@@ -41,11 +41,11 @@ export const createProduct = createAsyncThunk(
         showToastMessage({ message: "상품 생성 완료", status: "success" })
       );
       return response.data;
-    } catch (err) {
+    } catch (error) {
       dispatch(
         showToastMessage({ message: "상품 생성 실패", status: "error" })
       );
-      return rejectWithValue(err.message);
+      return rejectWithValue(error.error);
     }
   }
 );
@@ -61,11 +61,11 @@ export const deleteProduct = createAsyncThunk(
       );
       dispatch(getProductList({ page: 1 }));
       return response.data;
-    } catch (err) {
+    } catch (error) {
       dispatch(
         showToastMessage({ message: "상품 삭제 실패", status: "error" })
       );
-      return rejectWithValue(err.message);
+      return rejectWithValue(error.error);
     }
   }
 );
@@ -82,11 +82,11 @@ export const editProduct = createAsyncThunk(
       );
       // dispatch(getProductList({ page: 1 }));
       return response.data;
-    } catch (err) {
+    } catch (error) {
       dispatch(
         showToastMessage({ message: "상품 수정 실패", status: "error" })
       );
-      return rejectWithValue(err.message);
+      return rejectWithValue(error.error);
     }
   }
 );

@@ -76,28 +76,29 @@ const LandingPage = () => {
           </div>
         )}
       </Row>
-
-      <ReactPaginate
-        nextLabel="next >"
-        onPageChange={handlePageClick}
-        pageRangeDisplayed={5} //표현할 페이지
-        pageCount={totalPageNum} //전체페이지 백에 전달해야하는 정보
-        forcePage={searchQuery.page - 1} //실제페이지 + 1 값
-        previousLabel="< previous"
-        renderOnZeroPageCount={null}
-        pageClassName="page-item"
-        pageLinkClassName="page-link"
-        previousClassName="page-item"
-        previousLinkClassName="page-link"
-        nextClassName="page-item"
-        nextLinkClassName="page-link"
-        breakLabel="..."
-        breakClassName="page-item"
-        breakLinkClassName="page-link"
-        containerClassName="pagination"
-        activeClassName="active"
-        className="display-center list-style-none"
-      />
+      <div style={{ marginTop: "50px" }}>
+        <ReactPaginate
+          nextLabel="next >"
+          onPageChange={handlePageClick}
+          pageRangeDisplayed={5} //표현할 페이지
+          pageCount={totalPageNum} //전체페이지 백에 전달해야하는 정보
+          forcePage={searchQuery.page - 1} //실제페이지 + 1 값
+          previousLabel="< previous"
+          renderOnZeroPageCount={null}
+          pageClassName="page-item"
+          pageLinkClassName="page-link"
+          previousClassName="page-item"
+          previousLinkClassName="page-link"
+          nextClassName="page-item"
+          nextLinkClassName="page-link"
+          breakLabel="..."
+          breakClassName="page-item"
+          breakLinkClassName="page-link"
+          containerClassName="pagination"
+          activeClassName="active"
+          className="display-center list-style-none"
+        />
+      </div>
     </Container>
   );
 };

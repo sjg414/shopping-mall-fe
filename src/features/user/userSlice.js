@@ -12,9 +12,9 @@ export const loginWithEmail = createAsyncThunk(
       const response = await api.post("/auth/login", { email, password });
       //성공 시 data값 저장
       return response.data;
-    } catch (err) {
+    } catch (error) {
       //실패시 loginError 값 저장
-      return rejectWithValue(err.message);
+      return rejectWithValue(error.error);
     }
   }
 );
@@ -27,6 +27,7 @@ export const loginWithGoogle = createAsyncThunk(
 export const logout = () => (dispatch) => {
   try {
     dispatch(logoutAction());
+    dispatch(initialCart());
     dispatch(
       showToastMessage({
         message: "로그아웃되었습니다.",
@@ -70,7 +71,7 @@ export const registerUser = createAsyncThunk(
           status: "error",
         })
       );
-      return rejectWithValue(error.message);
+      return rejectWithValue(error.error);
     }
   }
 );
@@ -82,8 +83,8 @@ export const loginWithToken = createAsyncThunk(
     try {
       const response = await api.get("/user/me");
       return response.data;
-    } catch (err) {
-      return rejectWithValue(err.message);
+    } catch (error) {
+      return rejectWithValue(error.error);
     }
   }
 );

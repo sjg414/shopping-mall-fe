@@ -11,11 +11,12 @@ import { getCartQty } from "../features/cart/cartSlice";
 const AppLayout = ({ children }) => {
   const location = useLocation();
   const dispatch = useDispatch();
-
+  const token = sessionStorage.getItem("token");
   const { user } = useSelector((state) => state.user);
+
   //토큰으로 로그인
   useEffect(() => {
-    dispatch(loginWithToken());
+    if (token) dispatch(loginWithToken());
   }, []);
 
   useEffect(() => {
