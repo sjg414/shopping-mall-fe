@@ -7,7 +7,7 @@ import OrderReceipt from "../PaymentPage/component/OrderReceipt";
 import "./style/cart.style.css";
 import { getCartList } from "../../features/cart/cartSlice";
 import { getProductDetail } from "../../features/product/productSlice";
-import Spinner from "react-bootstrap";
+import Spinner from "react-bootstrap/Spinner";
 
 const CartPage = () => {
   const dispatch = useDispatch();
