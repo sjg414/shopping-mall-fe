@@ -55,12 +55,44 @@ export const getCartList = createAsyncThunk(
 
 export const deleteCartItem = createAsyncThunk(
   "cart/deleteCartItem",
-  async (id, { rejectWithValue, dispatch }) => {}
+  async (id, { rejectWithValue, dispatch }) => {
+    try {
+      const response = await api.delete(`/cart/${id}`);
+      if (response.status !== 200) throw new Error(response.error);
+      dispatch(getCartList());
+      dispatch(getCartQty());
+      dispatch(
+        showToastMessage({
+          message: "상품이 삭제 됐습니다.",
+          status: "success",
+        })
+      );
+      return response.data.cartItemQty;
+    } catch (error) {
+      dispatch(
+        showToastMessage({
+          message: "잠시 후 다시 시도해주세요.",
+          status: "error",
+        })
+      );
+      return rejectWithValue(error.error);
+    }
+  }
 );
 
 export const updateQty = createAsyncThunk(
   "cart/updateQty",
-  async ({ id, value }, { rejectWithValue }) => {}
+  async ({ id, value }, { dispatch, rejectWithValue }) => {
+    try {
+      console.log("id", id, value);
+      const response = await api.put(`/cart/${id}`, { qty: value });
+      if (response.status !== 200) throw new Error(response.error);
+      console.log("updateQty", response.data.data);
+      return response.data.data;
+    } catch (error) {
+      return rejectWithValue(error.error);
+    }
+  }
 );
 
 //카트에 담긴 아이템 갯수 가져오기
@@ -121,9 +153,42 @@ const cartSlice = createSlice({
       .addCase(getCartList.fulfilled, (state, action) => {
         state.loading = false;
         state.cartList = action.payload;
+        state.totalPrice = action.payload.reduce(
+          (total, item) => total + item.productId.price * item.qty,
+          0
+        );
         state.error = "";
       })
       .addCase(getCartList.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      //카트페이지의 개별 상품 qty 변경
+      .addCase(updateQty.pending, (state, action) => {
+        state.loading = true;
+      })
+      .addCase(updateQty.fulfilled, (state, action) => {
+        state.loading = false;
+        state.cartList = action.payload.items;
+        state.totalPrice = action.payload.items.reduce(
+          (total, item) => total + item.productId.price * item.qty,
+          0
+        );
+        state.error = "";
+      })
+      .addCase(updateQty.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      //카트에 담긴 상품 삭제
+      .addCase(deleteCartItem.pending, (state, action) => {
+        state.loading = true;
+      })
+      .addCase(deleteCartItem.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error = "";
+      })
+      .addCase(deleteCartItem.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });
