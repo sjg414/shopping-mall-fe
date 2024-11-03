@@ -59,15 +59,13 @@ export const deleteCartItem = createAsyncThunk(
     try {
       const response = await api.delete(`/cart/${id}`);
       if (response.status !== 200) throw new Error(response.error);
-      dispatch(getCartList());
-      dispatch(getCartQty());
       dispatch(
         showToastMessage({
           message: "상품이 삭제 됐습니다.",
           status: "success",
         })
       );
-      return response.data.cartItemQty;
+      return response.data;
     } catch (error) {
       dispatch(
         showToastMessage({
@@ -186,6 +184,12 @@ const cartSlice = createSlice({
       })
       .addCase(deleteCartItem.fulfilled, (state, action) => {
         state.loading = false;
+        state.cartList = action.payload.data.items;
+        state.totalPrice = action.payload.data.items.reduce(
+          (total, item) => total + item.productId.price * item.qty,
+          0
+        );
+        state.cartItemCount = action.payload.cartItemQty;
         state.error = "";
       })
       .addCase(deleteCartItem.rejected, (state, action) => {
