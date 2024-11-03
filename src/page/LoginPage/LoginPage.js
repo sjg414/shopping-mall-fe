@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Container, Form, Button, Alert, Spinner } from "react-bootstrap";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { GoogleLogin } from "@react-oauth/google";
 import { GoogleOAuthProvider } from "@react-oauth/google";
@@ -15,6 +15,7 @@ const Login = () => {
   const { user, loginError, loading } = useSelector((state) => state.user);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const { state } = useLocation();
 
   useEffect(() => {
     if (loginError) {
@@ -32,7 +33,11 @@ const Login = () => {
   };
   //user가 있을 시(로그인 성공 시) "/"로 redirect
   if (user) {
-    navigate("/");
+    if (state) {
+      navigate(state);
+    } else {
+      navigate("/");
+    }
   }
   return (
     <>

@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getProductList } from "../../features/product/productSlice";
 import ReactPaginate from "react-paginate";
 import Spinner from "react-bootstrap/Spinner";
+import { RingLoader } from "react-spinners";
 
 const LandingPage = () => {
   const dispatch = useDispatch();
@@ -48,11 +49,12 @@ const LandingPage = () => {
   if (loading || !productList)
     return (
       <div className="loadingSpinner">
-        <Spinner
+        {/* <Spinner
           animation="border"
           variant="warning"
           style={{ width: "12rem", height: "12rem" }}
-        />
+        /> */}
+        <RingLoader color="#29a7c7" size={150} />
       </div>
     );
   return (

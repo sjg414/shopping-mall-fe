@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
 import { Container, Row, Col, Button, Dropdown } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { ColorRing } from "react-loader-spinner";
@@ -9,6 +9,7 @@ import { getProductDetail } from "../../features/product/productSlice";
 import { addToCart } from "../../features/cart/cartSlice";
 import Spinner from "react-bootstrap/Spinner";
 import { showToastMessage } from "../../features/common/uiSlice";
+import { RingLoader } from "react-spinners";
 
 const ProductDetail = () => {
   const dispatch = useDispatch();
@@ -18,6 +19,7 @@ const ProductDetail = () => {
   const [sizeError, setSizeError] = useState(false);
   const user = useSelector((state) => state.user.user);
   const navigate = useNavigate();
+  const { pathname } = useLocation();
 
   const addItemToCart = () => {
     //사이즈를 아직 선택안했다면 에러
@@ -27,7 +29,7 @@ const ProductDetail = () => {
     }
     // 아직 로그인을 안한유저라면 로그인페이지로
     if (!user) {
-      navigate("/login");
+      navigate("/login", { state: pathname });
       dispatch(
         showToastMessage({
           message: "로그인을 먼저 해주세요.",
@@ -51,21 +53,8 @@ const ProductDetail = () => {
 
   if (loading || !selectedProduct)
     return (
-      // <ColorRing
-      //   visible={true}
-      //   height="80"
-      //   width="80"
-      //   ariaLabel="blocks-loading"
-      //   wrapperStyle={{}}
-      //   wrapperClass="blocks-wrapper"
-      //   colors={["#e15b64", "#f47e60", "#f8b26a", "#abbd81", "#849b87"]}
-      // />
       <div className="loadingSpinner">
-        <Spinner
-          animation="border"
-          variant="warning"
-          style={{ width: "12rem", height: "12rem" }}
-        />
+        <RingLoader color="#29a7c7" size={150} />
       </div>
     );
   return (
@@ -114,7 +103,12 @@ const ProductDetail = () => {
           <div className="warning-message">
             {sizeError && "사이즈를 선택해주세요."}
           </div>
-          <Button variant="dark" className="add-button" onClick={addItemToCart}>
+          <Button
+            variant={loading ? "danger" : "dark"}
+            className="add-button"
+            onClick={addItemToCart}
+            disabled={loading}
+          >
             추가
           </Button>
         </Col>

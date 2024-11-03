@@ -7,7 +7,7 @@ import OrderReceipt from "../PaymentPage/component/OrderReceipt";
 import "./style/cart.style.css";
 import { getCartList } from "../../features/cart/cartSlice";
 import { getProductDetail } from "../../features/product/productSlice";
-import Spinner from "react-bootstrap/Spinner";
+import { RingLoader } from "react-spinners";
 
 const CartPage = () => {
   const dispatch = useDispatch();
@@ -22,11 +22,7 @@ const CartPage = () => {
   if (loading || !cartList)
     return (
       <div className="loadingSpinner">
-        <Spinner
-          animation="border"
-          variant="warning"
-          style={{ width: "12rem", height: "12rem" }}
-        />
+        <RingLoader color="#29a7c7" size={150} />
       </div>
     );
   return (

@@ -1,12 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { Row, Col, Form } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useDispatch } from "react-redux";
 import { currencyFormat } from "../../../utils/number";
 import { updateQty, deleteCartItem } from "../../../features/cart/cartSlice";
+import ConfirmModal from "../../../common/component/ConfirmModal";
 const CartProductCard = ({ item }) => {
   const dispatch = useDispatch();
+  const [show, setShow] = useState(false);
 
   const handleQtyChange = (id, value) => {
     dispatch(updateQty({ id, value }));
@@ -29,7 +31,9 @@ const CartProductCard = ({ item }) => {
               <FontAwesomeIcon
                 icon={faTrash}
                 width={24}
-                onClick={() => deleteCart(item._id)}
+                onClick={() => {
+                  setShow(true);
+                }}
               />
             </button>
           </div>
@@ -63,6 +67,12 @@ const CartProductCard = ({ item }) => {
           </div>
         </Col>
       </Row>
+      <ConfirmModal
+        item={item}
+        show={show}
+        setShow={setShow}
+        deleteCart={deleteCart}
+      />
     </div>
   );
 };
