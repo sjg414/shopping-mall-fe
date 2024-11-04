@@ -71,7 +71,7 @@ const CartProductCard = ({ item }) => {
         item={item}
         show={show}
         setShow={setShow}
-        deleteCart={deleteCart}
+        deleteFunction={deleteCart}
       />
     </div>
   );

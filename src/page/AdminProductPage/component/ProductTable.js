@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Table from "react-bootstrap/Table";
 import { currencyFormat } from "../../../utils/number";
+import ConfirmModal from "../../../common/component/ConfirmModal";
 
 const ProductTable = ({ header, data, deleteItem, openEditForm }) => {
+  const [show, setShow] = useState(false);
+  console.log("data", data);
   return (
     <div className="overflow-x">
       <Table striped bordered hover>
@@ -40,7 +43,10 @@ const ProductTable = ({ header, data, deleteItem, openEditForm }) => {
                     <Button
                       size="sm"
                       variant="danger"
-                      onClick={() => deleteItem(item._id)}
+                      // onClick={() => deleteItem(item._id)}
+                      onClick={() => {
+                        setShow(true);
+                      }}
                       className="mr-1"
                     >
                       -
@@ -48,6 +54,12 @@ const ProductTable = ({ header, data, deleteItem, openEditForm }) => {
                     <Button size="sm" onClick={() => openEditForm(item)}>
                       Edit
                     </Button>
+                    <ConfirmModal
+                      item={item}
+                      show={show}
+                      setShow={setShow}
+                      deleteFunction={deleteItem}
+                    />
                   </th>
                 </tr>
               ))

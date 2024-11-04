@@ -2,7 +2,7 @@ import React from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 
-const ConfirmModal = ({ item, show, setShow, deleteCart }) => {
+const ConfirmModal = ({ item, show, setShow, deleteFunction }) => {
   const handleClose = () => {
     setShow(false);
   };
@@ -25,7 +25,7 @@ const ConfirmModal = ({ item, show, setShow, deleteCart }) => {
           variant="danger"
           onClick={() => {
             handleClose();
-            deleteCart(item._id);
+            deleteFunction(item._id);
           }}
         >
           예

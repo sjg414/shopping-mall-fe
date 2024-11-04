@@ -75,7 +75,9 @@ const PaymentPage = () => {
   const handleInputFocus = (e) => {
     setCardValue({ ...cardValue, focus: e.target.name });
   };
+
   if (cartList?.length === 0) {
+    console.log("payment redirect");
     navigate("/cart");
   } // 주문할 아이템이 없다면 주문하기로 안넘어가게 막음
   return (
