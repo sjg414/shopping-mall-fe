@@ -3,6 +3,7 @@ import api from "../../utils/api";
 import { showToastMessage } from "../common/uiSlice";
 
 const initialState = {
+  cartPageLoading: false,
   loading: false,
   error: "",
   cartList: [],
@@ -59,13 +60,14 @@ export const deleteCartItem = createAsyncThunk(
     try {
       const response = await api.delete(`/cart/${id}`);
       if (response.status !== 200) throw new Error(response.error);
-      dispatch(getCartList());
+      // dispatch(getCartList());
       dispatch(
         showToastMessage({
           message: "상품이 삭제 됐습니다.",
           status: "success",
         })
       );
+      console.log("rrrrrr", response.data.data);
       return response.data;
     } catch (error) {
       dispatch(
@@ -147,10 +149,10 @@ const cartSlice = createSlice({
       })
       //카트에 담긴 아이템 리스트
       .addCase(getCartList.pending, (state, action) => {
-        state.loading = true;
+        state.cartPageLoading = true;
       })
       .addCase(getCartList.fulfilled, (state, action) => {
-        state.loading = false;
+        state.cartPageLoading = false;
         state.cartList = action.payload;
         state.totalPrice = action.payload.reduce(
           (total, item) => total + item.productId.price * item.qty,
@@ -159,7 +161,7 @@ const cartSlice = createSlice({
         state.error = "";
       })
       .addCase(getCartList.rejected, (state, action) => {
-        state.loading = false;
+        state.cartPageLoading = false;
         state.error = action.payload;
       })
       //카트페이지의 개별 상품 qty 변경
@@ -185,6 +187,11 @@ const cartSlice = createSlice({
       })
       .addCase(deleteCartItem.fulfilled, (state, action) => {
         state.loading = false;
+        state.cartList = action.payload.data.items;
+        state.totalPrice = action.payload.data.items.reduce(
+          (total, item) => total + item.productId.price * item.qty,
+          0
+        );
         state.cartItemCount = action.payload.cartItemQty;
         state.error = "";
       })

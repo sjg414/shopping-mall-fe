@@ -3,6 +3,7 @@ import { Button } from "react-bootstrap";
 import { useNavigate } from "react-router";
 import { useLocation } from "react-router-dom";
 import { currencyFormat } from "../../../utils/number";
+import { useSelector } from "react-redux";
 
 const OrderReceipt = ({ cartList, totalPrice }) => {
   const location = useLocation();

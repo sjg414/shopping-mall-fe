@@ -11,7 +11,9 @@ import { RingLoader } from "react-spinners";
 
 const CartPage = () => {
   const dispatch = useDispatch();
-  const { cartList, totalPrice, loading } = useSelector((state) => state.cart);
+  const { cartList, totalPrice, cartPageLoading } = useSelector(
+    (state) => state.cart
+  );
 
   useEffect(() => {
     //카트리스트 불러오기
@@ -19,7 +21,7 @@ const CartPage = () => {
   }, []);
   // console.log("cartList", cartList);
 
-  if (loading || !cartList)
+  if (cartPageLoading || !cartList)
     return (
       <div className="loadingSpinner">
         <RingLoader color="#29a7c7" size={150} />

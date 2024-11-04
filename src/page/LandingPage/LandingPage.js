@@ -20,7 +20,6 @@ const LandingPage = () => {
     name: query.get("name") || "",
   }); //검색 조건들을 저장하는 객체
 
-  console.log("nnnn", searchQuery.name);
   useEffect(() => {
     dispatch(
       getProductList({
