@@ -14,12 +14,14 @@ const initialState = {
 };
 
 // Async thunks
+//오더 생성
 export const createOrder = createAsyncThunk(
   "order/createOrder",
   async (payload, { dispatch, rejectWithValue }) => {
     try {
       const response = await api.post("/order", payload);
       if (response.status !== 200) throw new Error(response.error);
+      dispatch(getCartQty());
       dispatch(showToastMessage({ message: "주문 완료", status: "success" }));
       return response.data.orderNum;
     } catch (error) {
