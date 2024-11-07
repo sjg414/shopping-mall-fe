@@ -11,6 +11,7 @@ import {
   setSelectedOrder,
 } from "../../features/order/orderSlice";
 import "./style/adminOrder.style.css";
+import { RingLoader } from "react-spinners";
 
 const AdminOrderPage = () => {
   const navigate = useNavigate();
@@ -60,6 +61,12 @@ const AdminOrderPage = () => {
   const handleClose = () => {
     setOpen(false);
   };
+  if (loading)
+    return (
+      <div className="loadingSpinner">
+        <RingLoader color="#29a7c7" size={150} />
+      </div>
+    );
 
   return (
     <div className="locate-center">
