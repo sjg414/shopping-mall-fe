@@ -17,7 +17,9 @@ const AdminOrderPage = () => {
   const navigate = useNavigate();
   const [query] = useSearchParams();
   const dispatch = useDispatch();
-  const { orderList, totalPageNum } = useSelector((state) => state.order);
+  const { orderList, totalPageNum, loading } = useSelector(
+    (state) => state.order
+  );
   const [searchQuery, setSearchQuery] = useState({
     page: query.get("page") || 1,
     ordernum: query.get("ordernum") || "",
