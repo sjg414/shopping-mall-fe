@@ -6,7 +6,7 @@ import { currencyFormat } from "../../../utils/number";
 import { updateOrder } from "../../../features/order/orderSlice";
 
 const OrderDetailDialog = ({ open, handleClose }) => {
-  const selectedOrder = useSelector((state) => state.order.selectedOrder);
+  const { selectedOrder, loading } = useSelector((state) => state.order);
   const [orderStatus, setOrderStatus] = useState(selectedOrder.status);
   const dispatch = useDispatch();
 
@@ -88,7 +88,13 @@ const OrderDetailDialog = ({ open, handleClose }) => {
             >
               닫기
             </Button>
-            <Button type="submit">저장</Button>
+            <Button
+              variant={loading ? "warning" : "primary"}
+              type="submit"
+              disabled={loading}
+            >
+              {loading ? "loading..." : "저장"}
+            </Button>
           </div>
         </Form>
       </Modal.Body>

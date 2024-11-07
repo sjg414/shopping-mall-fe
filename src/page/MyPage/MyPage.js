@@ -5,15 +5,24 @@ import { useDispatch, useSelector } from "react-redux";
 import OrderStatusCard from "./component/OrderStatusCard";
 import "./style/orderStatus.style.css";
 import { getOrder } from "../../features/order/orderSlice";
+import { RingLoader } from "react-spinners";
 
 const MyPage = () => {
   const dispatch = useDispatch();
-  const { orderList } = useSelector((state) => state.order);
+  const { orderList, loading } = useSelector((state) => state.order);
   console.log(orderList);
   useEffect(() => {
     dispatch(getOrder());
   }, [dispatch]);
 
+  console.log("item", orderList);
+  if (loading) {
+    return (
+      <div className="loadingSpinner">
+        <RingLoader color="#29a7c7" size={150} />
+      </div>
+    );
+  }
   if (orderList?.length === 0) {
     return (
       <Container className="no-order-box">

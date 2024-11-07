@@ -16,29 +16,32 @@ const OrderTable = ({ header, data, openEditForm }) => {
         </thead>
         <tbody>
           {data.length > 0 ? (
-            data.map((item, index) => (
-              <tr onClick={() => openEditForm(item)}>
-                <th>{index}</th>
-                <th>{item.orderNum}</th>
-                <th>{item.createdAt.slice(0, 10)}</th>
-                <th>{item.userId.email}</th>
-                {item.items.length > 0 ? (
+            data
+              .slice(0)
+              .reverse()
+              .map((item, index) => (
+                <tr onClick={() => openEditForm(item)}>
+                  <th>{index}</th>
+                  <th>{item.orderNum}</th>
+                  <th>{item.createdAt.slice(0, 10)}</th>
+                  <th>{item.userId.email}</th>
+                  {item.items.length > 0 ? (
+                    <th>
+                      {item.items[0].productId.name}
+                      {item.items.length > 1 && `외 ${item.items.length - 1}개`}
+                    </th>
+                  ) : (
+                    <th></th>
+                  )}
+
+                  <th>{item.shipTo.address + " " + item.shipTo.city}</th>
+
+                  <th>{currencyFormat(item.totalPrice)}</th>
                   <th>
-                    {item.items[0].productId.name}
-                    {item.items.length > 1 && `외 ${item.items.length - 1}개`}
+                    <Badge bg={badgeBg[item.status]}>{item.status}</Badge>
                   </th>
-                ) : (
-                  <th></th>
-                )}
-
-                <th>{item.shipTo.address + " " + item.shipTo.city}</th>
-
-                <th>{currencyFormat(item.totalPrice)}</th>
-                <th>
-                  <Badge bg={badgeBg[item.status]}>{item.status}</Badge>
-                </th>
-              </tr>
-            ))
+                </tr>
+              ))
           ) : (
             <tr>No Data to show</tr>
           )}
